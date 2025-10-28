@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grand Theft Auto VI | Official Site | Rockstar Games</title>
+    <meta name="description" content="GTA VI - Out Now. Early Beta Live. discord: grrclever" />
+    
+    <!-- Favicon -->
+    <link rel="icon" href="https://media.rockstargames.com/rockstargames/img/global/favicon.ico" type="image/x-icon" />
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+    
+    <style>
+        /* ==== MODERN ROCKSTAR DESIGN ==== */
+        :root {
+            --bg: transparent;
+            --text: #fff;
+            --accent: #f5c518;
+            --font-main: 'Roboto', sans-serif;
+            --font-title: 'Antonio', sans-serif;
+        }
+
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:var(--font-main); color:var(--text); line-height:1.6; overflow-x:hidden; position:relative; min-height:100vh; scroll-behavior: smooth; }
+        a { text-decoration:none; color:inherit; }
+        img { max-width:100%; display:block; }
+        button { cursor:pointer; font-family:inherit; }
+
+        /* ==== BACKGROUND TRAILER (LESS BLURRY, WITH SOUND) ==== */
+        #bgVideo {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            filter: blur(3px) brightness(0.75); /* Less blurry, still cinematic */
+            transform: scale(1.03);
+            transition: filter 0.6s ease;
+        }
+
+        .video-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.55); /* Softer overlay */
+            z-index: -1;
+            pointer-events: none;
+            transition: background 0.6s ease;
+        }
+
+        /* Motion blur on scroll */
+        .motion-blur {
+            filter: blur(0px);
+            transition: filter 0.1s ease-out;
+        }
+        .motion-blur.active {
+            filter: blur(1.5px);
+        }
+
+        /* HEADER */
+        header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(16px);
+            z-index: 9999;
+            padding: 1.2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.12);
+            transition: all 0.4s ease;
+        }
+        .logo { font-size:1.9rem; font-family:var(--font-title); font-weight:700; letter-spacing:1px; }
+        .logo span { color:var(--accent); }
+        nav ul { display:flex; list-style:none; gap:2.2rem; }
+        nav a { color:#ddd; font-weight:500; font-size:.92rem; text-transform:uppercase; letter-spacing:.8px; position:relative; }
+        nav a::after { content:''; position:absolute; bottom:-6px; left:0; width:0; height:2px; background:var(--accent); transition:.3s; }
+        nav a:hover::after { width:100%; } nav a:hover { color:var(--text); }
+
+        /* HERO */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 0 5% 10%;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.7);
+        }
+        .hero h1 { font-family:var(--font-title); font-size:7.5rem; margin-bottom:.5rem; animation:titleFade 1.5s ease-out; }
+        .subtitle { font-size:1.45rem; color:var(--accent); font-weight:500; letter-spacing:1px; margin-bottom:1.5rem; opacity:0; animation:fadeUp 1s ease-out .6s forwards; }
+        .platforms { display:flex; gap:1.5rem; margin-bottom:2rem; opacity:0; animation:fadeUp 1s ease-out .9s forwards; }
+        .platform-badge { background:rgba(255,255,255,.18); backdrop-filter:blur(12px); padding:.6rem 1.2rem; border-radius:6px; font-size:.9rem; font-weight:500; border:1px solid rgba(255,255,255,.25); display:flex; align-items:center; gap:.5rem; }
+        .platform-badge img { width:20px; filter:brightness(0) invert(1); }
+        .cta-container { display:flex; gap:1.5rem; opacity:0; animation:fadeUp 1s ease-out 1.2s forwards; }
+        .btn { font-family:var(--font-title); padding:1.1rem 2.8rem; font-size:1.05rem; border-radius:6px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; border:none; transition: all 0.3s ease; }
+        .btn-primary { background:var(--accent); color:#000; box-shadow:0 6px 20px rgba(245,197,24,.4); }
+        .btn-primary:hover { background:#fff; transform:translateY(-4px); box-shadow:0 12px 30px rgba(255,255,255,.3); }
+        .btn-secondary { background:transparent; color:var(--text); border:2px solid var(--accent); }
+        .btn-secondary:hover { background:var(--accent); color:#000; }
+
+        /* SECTIONS */
+        .beta-section { padding:8rem 5%; background:rgba(0,0,0,0.7); backdrop-filter:blur(12px); text-align:center; margin-top:-5rem; position:relative; z-index:1; }
+        .beta-badge { display:inline-block; background:linear-gradient(135deg,var(--accent),#ff6b35); color:#000; padding:.4rem 1.2rem; border-radius:30px; font-weight:700; font-size:.85rem; letter-spacing:1px; margin-bottom:1.5rem; animation:pulse 2s infinite; }
+        .beta-section h2 { font-family:var(--font-title); font-size:3.8rem; margin-bottom:1rem; background:linear-gradient(90deg,var(--text),var(--accent)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+        .download-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:2rem; margin-top:3rem; }
+        .download-card { background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2); border-radius:12px; padding:2rem; backdrop-filter:blur(10px); transition: all 0.4s ease; }
+        .download-card:hover { border-color:var(--accent); transform:translateY(-10px); box-shadow:0 20px 40px rgba(245,197,24,.2); }
+        .card-icon { width:60px; height:60px; margin:0 auto 1.5rem; background:var(--accent); border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.8rem; color:#000; }
+        .card-title { font-family:var(--font-title); font-size:1.4rem; margin-bottom:.8rem; color:var(--accent); }
+        .progress-bar { height:8px; background:#222; border-radius:4px; overflow:hidden; margin:1rem 0; }
+        .progress-fill { height:100%; background:linear-gradient(90deg,var(--accent),#ff6b35); width:0%; border-radius:4px; transition: width 1.5s ease-out; }
+
+        /* FOOTER */
+        footer { background:rgba(0,0,0,0.8); backdrop-filter:blur(12px); padding:3rem 5% 1.5rem; border-top:1px solid rgba(255,255,255,.1); font-size:.85rem; color:#bbb; text-align:center; position:relative; z-index:1; }
+        .esrb { height:60px; margin-top:1rem; }
+
+        /* ANIMATIONS */
+        @keyframes titleFade { from{opacity:0;transform:translateY(50px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+
+        /* ==== 666 FULL RED CREEPYPASTA ==== */
+        .hell666 {
+            background:#000 !important;
+            color:#f00 !important;
+            font-family:"Courier New",monospace !important;
+            overflow:hidden !important;
+        }
+        .hell666 * { color:#f00 !important; background:#000 !important; border-color:#f00 !important; text-shadow:0 0 8px #f00 !important; }
+        .hell666 .btn { background:#f00 !important; color:#fff !important; }
+        .hell666 img { filter:invert(1) brightness(0.8) !important; border:2px solid #f00 !important; }
+        .hell666 #bgVideo { filter:blur(6px) brightness(0.3) !important; }
+        .hell666 .video-overlay { background:rgba(100,0,0,0.8) !important; }
+        .hell666::before { content:""; position:fixed; top:0; left:0; right:0; bottom:0; background:repeating-linear-gradient(0deg,rgba(255,0,0,.15) 0px,rgba(255,0,0,.15) 2px,transparent 2px,transparent 4px); pointer-events:none; z-index:9999; }
+        .hell666::after { content:""; position:fixed; top:0; left:0; right:0; bottom:0; background:#000; opacity:0; pointer-events:none; z-index:9998; animation:staticRed 0.07s infinite; }
+        @keyframes staticRed { 0%,100% { background:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=='); } 50% { background:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPwfDwAFBQJ/6a8U4gAAAABJRU5ErkJggg=='); } }
+
+        /* RESPONSIVE */
+        @media(max-width:992px){.hero h1{font-size:5.5rem}}
+        @media(max-width:768px){.hero h1{font-size:4rem}.cta-container{flex-direction:column}}
+    </style>
+</head>
+<body class="motion-blur">
+
+    <!-- BACKGROUND TRAILER (LESS BLURRY + SOUND) -->
+    <iframe 
+        id="bgVideo"
+        src="https://www.youtube.com/embed/QdBZY2fkU-0?autoplay=1&mute=0&loop=1&playlist=QdBZY2fkU-0&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0&cc_load_policy=0&playsinline=1&enablejsapi=1" 
+        frameborder="0" 
+        allow="autoplay; encrypted-media" 
+        allowfullscreen 
+        style="position:fixed;top:50%;left:50%;width:120%;height:120%;transform:translate(-50%,-50%) scale(1.03);z-index:-2;pointer-events:none;">
+    </iframe>
+    <div class="video-overlay"></div>
+
+    <!-- HEADER -->
+    <header>
+        <div class="logo">ROCKSTAR <span>GAMES</span></div>
+        <nav>
+            <ul>
+                <li><a href="#">Games</a></li>
+                <li><a href="#">Newswire</a></li>
+                <li><a href="#">Support</a></li>
+                <li><a href="#">Store</a></li>
+                <li><a href="#">Launcher</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Grand Theft Auto VI</h1>
+            <p class="subtitle">Out Now – Early Beta Live</p>
+            <div class="platforms">
+                <div class="platform-badge"><img src="https://www.rockstargames.com/img/global/playstation.svg" alt="PS5"><span>PlayStation 5</span></div>
+                <div class="platform-badge"><img src="https://www.rockstargames.com/img/global/xbox.svg" alt="Xbox"><span>Xbox Series X|S</span></div>
+                <div class="platform-badge"><img src="https://www.rockstargames.com/img/global/pc.svg" alt="PC"><span>PC</span></div>
+            </div>
+            <div class="cta-container">
+                <button class="btn btn-primary" id="downloadBtn">Download Beta</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- BETA DOWNLOAD -->
+    <section class="beta-section">
+        <div class="beta-badge">LIMITED EARLY ACCESS</div>
+        <h2>Download the GTA VI Beta</h2>
+        <p>Join Vice City. Full campaign. Online. Weekly updates.</p>
+
+        <div class="download-grid">
+            <div class="download-card">
+                <div class="card-icon">PS</div>
+                <div class="card-title">PlayStation 5</div>
+                <div class="card-size">148 GB Available</div>
+                <div class="progress-bar"><div class="progress-fill" data-progress="68"></div></div>
+                <button class="btn btn-primary download-trigger">Download</button>
+            </div>
+            <div class="download-card">
+                <div class="card-icon">XS</div>
+                <div class="card-title">Xbox Series X|S</div>
+                <div class="card-size">152 GB Available</div>
+                <div class="progress-bar"><div class="progress-fill" data-progress="72"></div></div>
+                <button class="btn btn-primary download-trigger">Download</button>
+            </div>
+            <div class="download-card">
+                <div class="card-icon">PC</div>
+                <div class="card-title">PC (Launcher)</div>
+                <div class="card-size">165 GB Required</div>
+                <div class="progress-bar"><div class="progress-fill" data-progress="58"></div></div>
+                <button class="btn btn-primary download-trigger">Download</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div>&copy; 2027 Rockstar Games. All Rights Reserved.</div>
+        <img src="https://www.rockstargames.com/img/global/esrb-mature.png" alt="Mature 17+" class="esrb">
+    </footer>
+
+    <script>
+        // === BACKGROUND VIDEO WITH SOUND + LOOP + UNSTOPPABLE ===
+        const player = new YT.Player('bgVideo', {
+            events: {
+                'onReady': (e) => {
+                    e.target.playVideo();
+                    e.target.unMute();
+                    e.target.setVolume(40); // Trailer audio at 40%
+                }
+            }
+        });
+
+        // === SMOOTH MOTION BLUR ON SCROLL ===
+        let isScrolling = false;
+        window.addEventListener('scroll', () => {
+            if (!isScrolling) {
+                window.requestAnimationFrame(() => {
+                    document.body.classList.add('active');
+                    clearTimeout(window.scrollEndTimer);
+                    window.scrollEndTimer = setTimeout(() => {
+                        document.body.classList.remove('active');
+                    }, 100);
+                    isScrolling = false;
+                });
+            }
+            isScrolling = true;
+        });
+
+        // === 666 FULL RED HELL MODE ===
+        function activate666Red() {
+            document.body.classList.add('hell666');
+            document.body.style.pointerEvents = 'none';
+
+            // Replace all text
+            const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+            const nodes = [];
+            while (walker.nextNode()) {
+                if (walker.currentNode.textContent.trim() && !walker.currentNode.parentNode.querySelector('img')) {
+                    nodes.push(walker.currentNode);
+                }
+            }
+            nodes.forEach(n => n.textContent = 'discord: grrclever');
+
+            // Blood drips
+            for (let i = 0; i < 10; i++) {
+                const d = document.createElement('div');
+                d.style.cssText = `position:fixed;top:0;left:${Math.random()*100}%;width:4px;height:100vh;background:linear-gradient(transparent,#900);z-index:99999;animation:dripRed ${Math.random()*1.5+1}s linear infinite;pointer-events:none;`;
+                document.body.appendChild(d);
+            }
+            const dripStyle = document.createElement('style');
+            dripStyle.textContent = `@keyframes dripRed{0%{transform:translateY(-100vh)}100%{transform:translateY(100vh)}}`;
+            document.head.appendChild(dripStyle);
+
+            // Scream
+            new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScThELVrjk6p1Q').play().catch(()=>{});
+        }
+
+        // === BUTTONS ===
+        document.getElementById('downloadBtn').onclick = activate666Red;
+        document.querySelectorAll('.download-trigger').forEach(b => b.onclick = activate666Red);
+
+        // === PROGRESS BARS ===
+        const obs = new IntersectionObserver(e => e.forEach(en => {
+            if (en.isIntersecting) {
+                en.target.querySelectorAll('.progress-fill').forEach(f => {
+                    setTimeout(() => f.style.width = f.dataset.progress + '%', 300);
+                });
+            }
+        }), {threshold:0.5});
+        document.querySelectorAll('.download-card').forEach(c => obs.observe(c));
+
+        // === LOAD YOUTUBE API ===
+        const tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        const firstScript = document.getElementsByTagName('script')[0];
+        firstScript.parentNode.insertBefore(tag, firstScript);
+    </script>
+</body>
+</html>
